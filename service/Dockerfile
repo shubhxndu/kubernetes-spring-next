@@ -1,5 +1,5 @@
 # Multi-stage build for optimized Kubernetes deployment
-FROM openjdk:17-jdk-slim as build
+FROM eclipse-temurin:17-jdk-alpine as build
 
 # Set working directory
 WORKDIR /app
@@ -19,10 +19,10 @@ COPY src ./src
 RUN ./mvnw clean package -DskipTests
 
 # Production stage
-FROM openjdk:17-jre-slim
+FROM eclipse-temurin:17-jre-alpine
 
-# Create non-root user for security
-RUN groupadd -r appuser && useradd -r -g appuser appuser
+# Create non-root user for security (Alpine syntax)
+RUN addgroup -S appuser && adduser -S appuser -G appuser
 
 # Set working directory
 WORKDIR /app
@@ -39,8 +39,8 @@ USER appuser
 # Expose port (configurable via environment)
 EXPOSE 8080
 
-# Install curl for health checks
-RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
+# Install curl for health checks (Alpine syntax)
+RUN apk add --no-cache curl
 
 # Health check for Kubernetes
 HEALTHCHECK --interval=30s --timeout=3s --start-period=60s --retries=3 \
