@@ -39,9 +39,12 @@ USER appuser
 # Expose port (configurable via environment)
 EXPOSE 8080
 
+# Install curl for health checks
+RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
+
 # Health check for Kubernetes
 HEALTHCHECK --interval=30s --timeout=3s --start-period=60s --retries=3 \
-  CMD curl -f http://localhost:8080/actuator/health || exit 1
+  CMD curl -f http://localhost:${SERVER_PORT:-8080}/actuator/health || exit 1
 
 # Run the application with JVM optimizations for containers
 ENTRYPOINT ["java", \
