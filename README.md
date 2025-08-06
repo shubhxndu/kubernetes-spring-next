@@ -24,6 +24,8 @@ This project implements a complete employee management system following microser
 - ✅ Database initialization with sample data
 - ✅ Container health monitoring and auto-restart
 
+**Docker Hub Repository**: [shubhendumishra/employee-api](https://hub.docker.com/r/shubhendumishra/employee-api)
+
 ## 🛠️ Technology Stack
 
 | Component             | Technology  | Version |
@@ -62,8 +64,6 @@ This project implements a complete employee management system following microser
 
 - **API Service**: `shubhendumishra/employee-api:11`
 - **Database**: `mongo:6`
-
-**Docker Hub Repository**: [shubhendumishra/employee-api](https://hub.docker.com/r/shubhendumishra/employee-api)
 
 ## 🚀 Quick Start
 
@@ -281,7 +281,7 @@ kubectl delete pod mongo-0
 ##### Verify data persists after pod recreation
 
 ```bash
-curl -X GET http://<INGRESS-IP>/employees
+curl -X GET http://35.190.5.27/employees
 ```
 
 ## 🔗 API Endpoints
@@ -299,10 +299,10 @@ curl -X GET http://<INGRESS-IP>/employees
 
 ```bash
 # Get all employees
-curl -X GET http://<INGRESS-IP>/employees
+curl -X GET http://35.190.5.27/employees
 
 # Add new employee
-curl -X POST http://<INGRESS-IP>/addEmployee \
+curl -X POST http://35.190.5.27/employees/addEmployee \
   -H "Content-Type: application/json" \
   -d '{"name":"John Doe","designation":"Developer","department":"IT","salary":75000}'
 ```
