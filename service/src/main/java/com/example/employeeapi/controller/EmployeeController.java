@@ -29,7 +29,7 @@ public class EmployeeController {
         return ZonedDateTime.now(ZoneId.of("Asia/Kolkata")).format(IST_FORMATTER);
     }
 
-    @GetMapping("/ping")
+    @GetMapping("/employees/ping")
     public String ping() {
         logger.info("[{}] Received GET request to /ping", getCurrentISTTimestamp());
         String response = "pong";
