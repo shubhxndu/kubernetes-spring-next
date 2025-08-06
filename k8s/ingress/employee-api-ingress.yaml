@@ -3,6 +3,11 @@ kind: Ingress
 metadata:
   name: employee-api-ingress
 spec:
+  tls:
+    - hosts:
+        - shubhendu.dev
+        - api.shubhendu.dev
+      secretName: employee-api-tls
   rules:
     - host: api.shubhendu.dev
       http:
@@ -12,5 +17,15 @@ spec:
             backend:
               service:
                 name: employee-api
+                port:
+                  number: 8080
+    - host: shubhendu.dev
+      http:
+        paths:
+          - path: /.well-known/acme-challenge/
+            pathType: Prefix
+            backend:
+              service:
+                name: dummy-solver # This will be overwritten by cert-manager
                 port:
                   number: 8080
