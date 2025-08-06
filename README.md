@@ -82,37 +82,218 @@ cd kubernetes-spring-next
 
 ### 2. Deploy Application
 
+#### Kubernetes Commands
+
+##### Show all pods
+
 ```bash
-# Deploy database tier
-kubectl apply -f k8s/mongodb/
-
-# Deploy API service
-kubectl apply -f k8s/employee-api-service/
-
-# Create external access
-kubectl apply -f k8s/ingress/
+kubectl get pods
 ```
 
-### 3. Get Access URL
+##### Show all services
 
 ```bash
-# For minikube
-minikube service employee-api --url
+kubectl get services
+```
 
-# For other clusters
+##### Show all deployments
+
+```bash
+kubectl get deployments
+```
+
+##### Show all statefulsets
+
+```bash
+kubectl get statefulsets
+```
+
+##### Show all configmaps
+
+```bash
+kubectl get configmaps
+```
+
+##### Show all secrets
+
+```bash
+kubectl get secrets
+```
+
+##### Show all ingress
+
+```bash
 kubectl get ingress
+```
+
+#### Deploy ConfigMap
+
+##### Create MongoDB configuration
+
+```bash
+kubectl apply -f k8s/mongodb/mongo-configmap.yaml
+```
+
+#### Deploy Secrets
+
+##### Create MongoDB credentials
+
+```bash
+kubectl apply -f k8s/mongodb/mongo-secret.yaml
+```
+
+#### Deploy PVC
+
+##### Create persistent volume claim
+
+```bash
+kubectl apply -f k8s/mongodb/mongo-pvc.yaml
+```
+
+#### Deploy StatefulSet and Service
+
+##### Create MongoDB StatefulSet
+
+```bash
+kubectl apply -f k8s/mongodb/mongo-statefulset.yaml
+```
+
+##### Create MongoDB Service
+
+```bash
+kubectl apply -f k8s/mongodb/mongo-service.yaml
+```
+
+##### Initialize database with sample data
+
+```bash
+kubectl apply -f k8s/mongodb/mongo-init-job.yaml
+```
+
+#### Deploy API Service
+
+##### Create Employee API deployment and service
+
+```bash
+kubectl apply -f k8s/employee-api-service/employee-api-service.yaml
+```
+
+#### Deploy Ingress
+
+##### Create ingress for external access
+
+```bash
+kubectl apply -f k8s/ingress/employee-api-ingress.yaml
+```
+
+### Deletion Commands
+
+#### Delete API deployment and service
+
+```bash
+kubectl delete -f k8s/employee-api-service/employee-api-service.yaml
+```
+
+##### Delete MongoDB initialization job
+
+```bash
+kubectl delete -f k8s/mongodb/mongo-init-job.yaml
+```
+
+##### Delete MongoDB service
+
+```bash
+kubectl delete -f k8s/mongodb/mongo-service.yaml
+```
+
+#### Delete MongoDB StatefulSet
+
+```bash
+kubectl delete -f k8s/mongodb/mongo-statefulset.yaml
+```
+
+##### Delete persistent volume claim
+
+```bash
+kubectl delete -f k8s/mongodb/mongo-pvc.yaml
+```
+
+##### Delete MongoDB configuration
+
+```bash
+kubectl delete -f k8s/mongodb/mongo-configmap.yaml
+```
+
+##### Delete MongoDB credentials
+
+```bash
+kubectl delete -f k8s/mongodb/mongo-secret.yaml
+```
+
+##### Delete ingress
+
+```bash
+kubectl delete -f k8s/ingress/employee-api-ingress.yaml
+```
+
+#### MongoDB Service Check
+
+##### Check MongoDB pod status
+
+```bash
+kubectl get pods -l app=mongo
+```
+
+#### Rolling Updates Demo
+
+##### Check current deployment image
+
+```bash
+kubectl get deployment employee-api -o wide
+```
+
+##### Update deployment image
+
+```bash
+kubectl set image deployment/employee-api employee-api=shubhendumishra/employee-api:12
+```
+
+##### Watch rolling update progress
+
+```bash
+kubectl rollout status deployment/employee-api
+```
+
+##### Check rollout history
+
+```bash
+kubectl rollout history deployment/employee-api
+```
+
+#### Data Persistence Demo
+
+##### Delete MongoDB pod to test persistence
+
+```bash
+kubectl delete pod mongo-0
+```
+
+##### Verify data persists after pod recreation
+
+```bash
+curl -X GET http://<INGRESS-IP>/employees
 ```
 
 ## 🔗 API Endpoints
 
-| Method | Endpoint          | Description         |
-| ------ | ----------------- | ------------------- |
-| GET    | `/`               | Health check        |
-| GET    | `/ping`           | Service status      |
-| GET    | `/employees`      | List all employees  |
-| GET    | `/employees/{id}` | Get employee by ID  |
-| POST   | `/addEmployee`    | Create new employee |
-| DELETE | `/employees/{id}` | Delete employee     |
+| Method | Endpoint                 | Description         |
+| ------ | ------------------------ | ------------------- |
+| GET    | `/`                      | Health check        |
+| GET    | `/employees/ping`        | Service status      |
+| GET    | `/employees`             | List all employees  |
+| GET    | `/employees/{id}`        | Get employee by ID  |
+| POST   | `/employees/addEmployee` | Create new employee |
+| DELETE | `/employees/{id}`.       | Delete employee     |
 
 ### 📝 Sample API Usage
 
