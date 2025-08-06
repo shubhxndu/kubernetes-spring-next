@@ -21,22 +21,40 @@ spec:
     spec:
       containers:
         - name: employee-api
-          image: shubhendumishra/employee-api:15
+          image: shubhendumishra/employee-api:16
           ports:
             - containerPort: 8080
           env:
             - name: MONGO_HOST
-              value: "mongo"
+              valueFrom:
+                configMapKeyRef:
+                  name: mongo-config
+                  key: MONGO_HOST
             - name: MONGO_PORT
-              value: "27017"
+              valueFrom:
+                configMapKeyRef:
+                  name: mongo-config
+                  key: MONGO_PORT
             - name: MONGO_INITDB_DATABASE
-              value: "employeedb"
+              valueFrom:
+                configMapKeyRef:
+                  name: mongo-config
+                  key: MONGO_INITDB_DATABASE
             - name: APP_NAME
-              value: "employee-api"
+              valueFrom:
+                configMapKeyRef:
+                  name: mongo-config
+                  key: APP_NAME
             - name: LOG_LEVEL
-              value: "INFO"
+              valueFrom:
+                configMapKeyRef:
+                  name: mongo-config
+                  key: LOG_LEVEL
             - name: MONGO_LOG_LEVEL
-              value: "INFO"
+              valueFrom:
+                configMapKeyRef:
+                  name: mongo-config
+                  key: MONGO_LOG_LEVEL
             - name: MONGO_APP_USERNAME
               valueFrom:
                 secretKeyRef:
