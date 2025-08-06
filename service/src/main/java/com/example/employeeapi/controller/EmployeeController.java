@@ -49,19 +49,23 @@ public class EmployeeController {
     public ResponseEntity<List<Employee>> getAllEmployees() {
         logger.info("[{}] Received GET request to /employees", getCurrentISTTimestamp());
         List<Employee> employees = employeeService.getAllEmployees();
-        logger.info("[{}] Responding to /employees with {} employees, Status: OK", getCurrentISTTimestamp(), employees.size());
+        logger.info("[{}] Responding to /employees with {} employees, Status: OK", getCurrentISTTimestamp(),
+                employees.size());
         return new ResponseEntity<>(employees, HttpStatus.OK);
     }
 
-    @PostMapping("/addEmployee")
+    @PostMapping("/employees/addEmployee")
     public ResponseEntity<Employee> addEmployee(@RequestBody Employee employee) {
-        logger.info("[{}] Received POST request to /addEmployee with employee data: {}", getCurrentISTTimestamp(), employee);
+        logger.info("[{}] Received POST request to /addEmployee with employee data: {}", getCurrentISTTimestamp(),
+                employee);
         try {
             Employee savedEmployee = employeeService.saveEmployee(employee);
-            logger.info("[{}] Successfully added employee with ID: {}, Status: CREATED", getCurrentISTTimestamp(), savedEmployee.getId());
+            logger.info("[{}] Successfully added employee with ID: {}, Status: CREATED", getCurrentISTTimestamp(),
+                    savedEmployee.getId());
             return new ResponseEntity<>(savedEmployee, HttpStatus.CREATED);
         } catch (Exception e) {
-            logger.error("[{}] Failed to add employee: {}, Status: BAD_REQUEST", getCurrentISTTimestamp(), e.getMessage());
+            logger.error("[{}] Failed to add employee: {}, Status: BAD_REQUEST", getCurrentISTTimestamp(),
+                    e.getMessage());
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
