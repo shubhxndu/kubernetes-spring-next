@@ -32,7 +32,7 @@ public class EmployeeController {
     @GetMapping("/ping")
     public String ping() {
         logger.info("[{}] Received GET request to /ping", getCurrentISTTimestamp());
-        String response = "pong ping pong";
+        String response = "pong";
         logger.info("[{}] Responding to /ping with: {}", getCurrentISTTimestamp(), response);
         return response;
     }
