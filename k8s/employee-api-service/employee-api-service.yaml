@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
         - name: employee-api
-          image: shubhendumishra/employee-api:14
+          image: shubhendumishra/employee-api:15
           ports:
             - containerPort: 8080
           env:
