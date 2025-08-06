@@ -17,6 +17,11 @@ public class EmployeeController {
     @Autowired
     private EmployeeService employeeService;
 
+    @GetMapping("/ping")
+    public String ping() {
+        return "pong ping pong";
+    }
+
     @GetMapping
     public ResponseEntity<List<Employee>> getAllEmployees() {
         List<Employee> employees = employeeService.getAllEmployees();
