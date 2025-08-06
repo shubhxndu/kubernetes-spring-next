@@ -4,7 +4,8 @@ metadata:
   name: employee-api-ingress
 spec:
   rules:
-    - http:
+    - host: api.shubhendu.dev
+      http:
         paths:
           - path: /employees
             pathType: Prefix
