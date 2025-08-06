@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/employees")
+@RequestMapping("/")
 public class EmployeeController {
 
     @Autowired
@@ -22,13 +22,13 @@ public class EmployeeController {
         return "pong ping pong";
     }
 
-    @GetMapping
+    @GetMapping("/employees")
     public ResponseEntity<List<Employee>> getAllEmployees() {
         List<Employee> employees = employeeService.getAllEmployees();
         return new ResponseEntity<>(employees, HttpStatus.OK);
     }
 
-    @PostMapping
+    @PostMapping("/addEmployee")
     public ResponseEntity<Employee> addEmployee(@RequestBody Employee employee) {
         try {
             Employee savedEmployee = employeeService.saveEmployee(employee);
@@ -38,7 +38,7 @@ public class EmployeeController {
         }
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/employees/{id}")
     public ResponseEntity<String> deleteEmployee(@PathVariable String id) {
         boolean deleted = employeeService.deleteEmployee(id);
         if (deleted) {
@@ -48,7 +48,7 @@ public class EmployeeController {
         }
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/employees/{id}")
     public ResponseEntity<Employee> getEmployeeById(@PathVariable String id) {
         Optional<Employee> employee = employeeService.getEmployeeById(id);
         if (employee.isPresent()) {
