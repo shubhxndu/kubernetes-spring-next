@@ -9,41 +9,27 @@ spec:
         - name: mongo-init
           image: mongo:6
           env:
-            - name: MONGO_INITDB_DATABASE
-              valueFrom:
-                configMapKeyRef:
-                  name: mongo-config
-                  key: MONGO_INITDB_DATABASE
-            - name: MONGO_APP_USERNAME
+            - name: MONGO_URI
               valueFrom:
                 secretKeyRef:
                   name: mongo-secret
-                  key: MONGO_APP_USERNAME
-            - name: MONGO_APP_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: mongo-secret
-                  key: MONGO_APP_PASSWORD
-          command: ["mongo"]
+                  key: MONGO_URI
+          command: ["sh", "-c"]
           args:
-            - "--host=mongo-0.mongo"
-            - "-u=$(MONGO_APP_USERNAME)"
-            - "-p=$(MONGO_APP_PASSWORD)"
-            - "--authenticationDatabase=$(MONGO_INITDB_DATABASE)"
-            - "$(MONGO_INITDB_DATABASE)"
-            - "--eval"
             - |
-              db.employees.insertMany([
-                { name: "Alice", designation: "Engineer", department: "IT", salary: 65000 },
-                { name: "Bob", designation: "Manager", department: "HR", salary: 75000 },
-                { name: "Charlie", designation: "Analyst", department: "Finance", salary: 60000 },
-                { name: "David", designation: "Engineer", department: "IT", salary: 67000 },
-                { name: "Eva", designation: "Designer", department: "Design", salary: 62000 },
-                { name: "Frank", designation: "Intern", department: "IT", salary: 30000 },
-                { name: "Grace", designation: "HR", department: "HR", salary: 58000 },
-                { name: "Henry", designation: "Lead", department: "Engineering", salary: 82000 },
-                { name: "Ivy", designation: "Marketing", department: "Sales", salary: 61000 },
-                { name: "John", designation: "CEO", department: "Management", salary: 150000 }
-              ])
+              mongosh "$MONGO_URI" --eval '
+                db.employees.insertMany([
+                  { name: "Alice", designation: "Engineer", department: "IT", salary: 65000 },
+                  { name: "Bob", designation: "Manager", department: "HR", salary: 75000 },
+                  { name: "Charlie", designation: "Analyst", department: "Finance", salary: 60000 },
+                  { name: "David", designation: "Engineer", department: "IT", salary: 67000 },
+                  { name: "Eva", designation: "Designer", department: "Design", salary: 62000 },
+                  { name: "Frank", designation: "Intern", department: "IT", salary: 30000 },
+                  { name: "Grace", designation: "HR", department: "HR", salary: 58000 },
+                  { name: "Henry", designation: "Lead", department: "Engineering", salary: 82000 },
+                  { name: "Ivy", designation: "Marketing", department: "Sales", salary: 61000 },
+                  { name: "John", designation: "CEO", department: "Management", salary: 150000 }
+                ])
+              '
       restartPolicy: Never
-  backoffLimit: 3
+  backoffLimit: 2
