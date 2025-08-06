@@ -22,6 +22,11 @@ public class EmployeeController {
         return "pong ping pong";
     }
 
+    @GetMapping("/")
+    public String helloService() {
+        return "hello";
+    }
+
     @GetMapping("/employees")
     public ResponseEntity<List<Employee>> getAllEmployees() {
         List<Employee> employees = employeeService.getAllEmployees();
